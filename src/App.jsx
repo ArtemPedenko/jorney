@@ -1,18 +1,16 @@
 import { Canvas } from "@react-three/fiber";
 import { Experience } from "./components/Experience";
-import { Environment } from "@react-three/drei";
+import { KeyboardControls, ScrollControls } from "@react-three/drei";
+import { useMemo } from "react";
 
 function App() {
   return (
     <>
-      <Canvas
-        camera={{
-          position: [0, 0, 5],
-          fov: 30,
-        }}
-      >
+      <Canvas>
         <color attach="background" args={["#ececec"]} />
-        <Experience />
+        <ScrollControls pages={10} damping={0.3}>
+          <Experience />
+        </ScrollControls>
       </Canvas>
     </>
   );
