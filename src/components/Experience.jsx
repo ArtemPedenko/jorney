@@ -16,15 +16,46 @@ import Ocean from "./Ocean.jsx";
 import { useFrame } from "@react-three/fiber";
 import { Euler, Vector3 } from "three";
 import { Cloud } from "./Cloud.jsx";
+import { TextComponent } from "./TextComponent.jsx";
 
 const LINE_NB_POINTS = 20000;
 export const Experience = () => {
+  const textSections = useMemo(() => {
+    return [
+      {
+        position: new Vector3(-3, 1, -30),
+        title: "Services",
+        subtitle: `Welcome to Wawatmos,
+Have a seat and enjoy the ride!`,
+        image: "./images/bulkerImage.jpg",
+      },
+      {
+        position: new Vector3(-3, 1, -100),
+        title: "Services",
+        subtitle: `Welcome to Wawatmos,
+Have a seat and enjoy the ride!`,
+      },
+      {
+        position: new Vector3(-3, 1, -150),
+        title: "Services",
+        subtitle: `Welcome to Wawatmos,
+Have a seat and enjoy the ride!`,
+      },
+      {
+        position: new Vector3(-3, 1, -350),
+        title: "Services",
+        subtitle: `Welcome to Wawatmos,
+Have a seat and enjoy the ride!`,
+      },
+    ];
+  }, []);
+
   const backgroundColors = useRef({
     colorA: "#3535cc",
     colorB: "#abaadd",
   });
 
-  const CURVE_DISTANCE = 250;
+  const CURVE_DISTANCE = 350;
   const curvePoints = useMemo(
     () => [
       new THREE.Vector3(0, 0, 0),
@@ -36,7 +67,7 @@ export const Experience = () => {
       new THREE.Vector3(0, 0, -6 * CURVE_DISTANCE),
       new THREE.Vector3(0, 0, -7 * CURVE_DISTANCE),
     ],
-    [],
+    []
   );
 
   const curve = useMemo(() => {
@@ -53,7 +84,7 @@ export const Experience = () => {
       ],
       false,
       "catmullrom",
-      0.5,
+      0.5
     );
   }, []);
 
@@ -63,15 +94,15 @@ export const Experience = () => {
       {
         position: new Vector3(-3.5, 4, -10),
       },
-      {
+      /*    {
         position: new Vector3(3.5, 4, -10),
       },
       {
         scale: new Vector3(4, 4, 4),
         position: new Vector3(5, 4, -68),
         rotation: new Euler(-Math.PI / 5, Math.PI / 6, 0),
-      },
-      {
+      }, */
+      /* {
         scale: new Vector3(2.5, 2.5, 2.5),
         position: new Vector3(10, 5, -52),
       },
@@ -163,9 +194,9 @@ export const Experience = () => {
         scale: new Vector3(4, 4, 4),
         position: new Vector3(curvePoints[7].x, 4, curvePoints[7].z),
         rotation: new Euler(0, 0, 0),
-      },
+      }, */
     ],
-    [],
+    []
   );
 
   const linePoints = useMemo(() => {
@@ -186,7 +217,7 @@ export const Experience = () => {
   useFrame((_state, delta) => {
     const curPointIndex = Math.min(
       Math.round(scroll.offset * linePoints.length),
-      linePoints.length - 1,
+      linePoints.length - 1
     );
     const curPoint = linePoints[curPointIndex];
     cameraGroup.current.position.lerp(curPoint, delta * 24);
@@ -196,7 +227,7 @@ export const Experience = () => {
     <>
       {/*<OrbitControls enableZoom={false} />*/}
       {/*  включить/выключить свободную камеру*/}
-      {/*<OrbitControls />*/}
+      <OrbitControls />
       <group ref={cameraGroup}>
         <Background backgroundColors={backgroundColors} />
         <PerspectiveCamera position={[0, 0.05, 1]} fov={25} makeDefault />
@@ -210,27 +241,54 @@ export const Experience = () => {
           />
         </Float>
       </group>
-
-      <group position={[-3, 0, -20]}>
-        <Text
-          color="white"
-          anchorX={"left"}
-          anchorY={"middle"}
-          fontSize={0.22}
-          maxWidth={2.5}
-        >
-          Welcome to Have a seat and enjoy the ride!
-        </Text>
-      </group>
+      {/* текст */}
+      {textSections.map((textSection, index) => (
+        <TextComponent {...textSection} key={index} />
+      ))}
       {/*океан*/}
-      {/*<group>*/}
-      {/*  <Ocean*/}
-      {/*    scale={[1, 0.001, 1]}*/}
-      {/*    position-y={-0.09}*/}
-      {/*    position-z={-30.2}*/}
-      {/*    position-x={-2}*/}
-      {/*  />*/}
-      {/*</group>*/}
+      <group>
+        {/* <Ocean
+          scale={[1, 0.001, 1]}
+          position-y={-0.09}
+          position-z={-30.2}
+          position-x={-2}
+        /> */}
+        {/* {Array.from({ length: 1000 }).map((item, index) => {
+          return (
+            <Ocean
+              key={index}
+              scale={[0.009, 0.00025, 0.0006]}
+              position-y={-0.05}
+              position-z={-index}
+              position-x={0}
+            />
+          );
+        })} */}
+        <Ocean
+          scale={[0.001, 0.00025, 0.0006]}
+          position-y={-0.05}
+          position-z={0}
+          position-x={0}
+        />
+        {/* <Ocean
+          scale={[0.001, 0.00025, 0.0006]}
+          position-y={-0.05}
+          position-z={-1}
+          position-x={0}
+        />
+        <Ocean
+          scale={[0.001, 0.00025, 0.0006]}
+          position-y={-0.05}
+          position-z={-2}
+          position-x={0}
+        />
+        <Ocean
+          scale={[0.001, 0.00025, 0.0006]}
+          position-y={-0.05}
+          position-z={-3}
+          position-x={0}
+        /> */}
+      </group>
 
       {/*линия*/}
       <group position-y={-2}>
